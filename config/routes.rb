@@ -10,4 +10,8 @@ Rails.application.routes.draw do
       patch :complete
     end
   end
+
+  # アバター選択（日本語UI）
+  get  "avatar", to: "users#avatar"
+  patch "avatar", to: "users#update_avatar"
 end

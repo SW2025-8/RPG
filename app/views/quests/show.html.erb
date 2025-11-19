@@ -1,16 +1,30 @@
-<h1>クエスト詳細</h1>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
 
-<p><strong>タイトル：</strong> <%= @quest.title %></p>
+      <div class="card shadow-sm">
+        <div class="card-body">
 
-<p><strong>説明：</strong><br>
-  <%= simple_format(@quest.description) %>
-</p>
+          <h1 class="card-title mb-3">クエスト詳細</h1>
 
-<p><strong>経験値：</strong> <%= @quest.exp_reward %></p>
+          <p><strong>タイトル：</strong> <%= @quest.title %></p>
 
-<hr>
+          <p><strong>説明：</strong><br>
+            <%= simple_format(@quest.description) %>
+          </p>
 
-<p>
-  <%= link_to "編集する", edit_quest_path(@quest) %> |
-  <%= link_to "一覧に戻る", quests_path %>
-</p>
+          <p><strong>獲得経験値：</strong> <%= @quest.exp_reward %></p>
+
+          <hr>
+
+          <div class="d-flex gap-2">
+            <a href="<%= edit_quest_path(@quest) %>" class="btn btn-warning">編集</a>
+            <a href="<%= quests_path %>" class="btn btn-secondary">一覧へ戻る</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
