@@ -12,8 +12,35 @@
 
 <hr>
 
+<table border="1" cellpadding="8">
+  <tr>
+    <th>タイトル</th>
+    <th>経験値</th>
+    <th>操作</th>
+    <th>完了</th>
+  </tr>
+<% @quests.each do |quest| %>
+    <tr>
+      <td><%= quest.title %></td>
+      <td><%= quest.exp_reward %></td>
+      <td>
+        <%= link_to "詳細", quest_path(quest) %> |
+        <%= link_to "編集", edit_quest_path(quest) %> |
+        <%= link_to "削除", quest_path(quest),
+              method: :delete,
+              data: { confirm: "本当に削除しますか？" } %>
+      </td>
+      <td>
+        <%= button_to "完了",
+              complete_quest_path(quest),
+              method: :patch,
+              form: { data: { turbo_confirm: "このクエストを完了しますか？" } } %>
+      </td>
+    </tr>
+  <% end %>
+</table>
 <p>
-  <%= link_to "クエスト一覧へ", quests_path %>
+  <%= link_to "クエスト追加", quests_path %>
 </p>
 
 <p>
