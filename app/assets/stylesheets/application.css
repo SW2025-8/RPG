@@ -8,3 +8,28 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+/* ▼▼▼ ここからRPG風カスタム ▼▼▼ */
+
+/* 全体背景：RPGゲームっぽい草原・ドット背景にできる */
+body {
+  background-image: url("rpg_background.png"); /* ← この画像を後で用意する */
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* カードを浮き上がらせてRPGメニュー風に */
+.card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(4px);
+  border-radius: 10px;
+}
+
+/* RPG風フォントを乗せる準備（あとでSTEP2で追加） */
+.rpg-font {
+  font-family: "PressStart2P", sans-serif;
+}
+
+/* ▼▼▼ RPGカスタムここまで ▼▼▼ */
