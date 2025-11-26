@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     @avatar_options = {
       "warrior" => "戦士",
       "mage"    => "魔法使い",
+      "priest"  => "僧侶",
       "thief"   => "盗賊"
     }
   end
@@ -17,6 +18,7 @@ class UsersController < ApplicationController
   def update_avatar
     @user = current_user
 
+    # radio_button_tag を使っているので params[:avatar_type] で受け取る
     if @user.update(avatar_type: params[:avatar_type])
       redirect_to root_path, notice: "アバターを変更しました！"
     else

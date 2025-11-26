@@ -2,20 +2,28 @@
 
   <div class="row">
 
-    <!-- ▼ 左：キャラ画像（仮） -->
+    <!-- ▼ 左：キャラ画像 -->
     <div class="col-md-3 text-center">
       <div class="card shadow-sm mb-3">
         <div class="card-body">
           <h5 class="mb-3">キャラクター</h5>
-          <img src="https://via.placeholder.com/150"
-               class="img-fluid rounded mb-2"
-               alt="avatar">
-          <p class="text-muted">（アバター画像は後で実装）</p>
+
+          <!-- ★ 選択済みアバター表示 -->
+          <%= image_tag current_user.avatar_image,
+                        class: "img-fluid rounded mb-2",
+                        alt: "avatar" %>
+
+          <div class="mt-2">
+            <a href="<%= avatar_path %>" class="btn btn-outline-primary btn-sm">
+              アバター変更
+            </a>
+          </div>
+
         </div>
       </div>
     </div>
 
-    <!-- ▼ 中央：クエスト一覧（簡易版） -->
+    <!-- ▼ 中央：クエスト一覧 -->
     <div class="col-md-6">
       <div class="card shadow-sm mb-3">
         <div class="card-body">
@@ -39,7 +47,7 @@
       </div>
     </div>
 
-    <!-- ▼ 右：ステータス（EXPバー含む） -->
+    <!-- ▼ 右：ステータス -->
     <div class="col-md-3">
       <div class="card shadow-sm mb-3">
         <div class="card-body">
@@ -49,11 +57,11 @@
 
           <p><strong>経験値：</strong></p>
 
-          <!-- ★ EXPバー（仮） -->
+          <!-- EXPバー -->
           <div class="progress mb-2">
             <div class="progress-bar bg-success"
                  role="progressbar"
-                 style="width: <%= (current_user.exp.to_f / 100 * 100).to_i %>%;">
+                 style="width: <%= (current_user.exp.to_f).to_i %>%;">
               <%= current_user.exp %>/100
             </div>
           </div>
@@ -64,7 +72,7 @@
 
   </div>
 
-  <!-- ▼ 下のボタン（ステータス画面・グラフ画面：後で作る） -->
+  <!-- ▼ 下メニュー -->
   <div class="row mt-3">
     <div class="col text-center">
       <a href="#" class="btn btn-outline-primary me-2">ステータス画面</a>

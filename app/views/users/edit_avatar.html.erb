@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <h3>キャラクター選択</h3>
+  <p class="text-muted">好きなキャラを選んでください。</p>
+
+  <%= form_with model: current_user, url: update_avatar_user_path, method: :patch do |f| %>
+
+    <div class="row">
+
+      <!-- 戦士 -->
+      <div class="col-md-3 text-center mb-4">
+        <%= image_tag "騎士.png", class: "img-fluid rounded" %>
+        <div class="form-check mt-2">
+          <%= f.radio_button :avatar_type, "warrior" %>
+          <label class="form-check-label">戦士</label>
+        </div>
+      </div>
+
+      <!-- 魔法使い -->
+      <div class="col-md-3 text-center mb-4">
+        <%= image_tag "魔法使い.png", class: "img-fluid rounded" %>
+        <div class="form-check mt-2">
+          <%= f.radio_button :avatar_type, "wizard" %>
+          <label class="form-check-label">魔法使い</label>
+        </div>
+      </div>
+
+      <!-- 僧侶 -->
+      <div class="col-md-3 text-center mb-4">
+        <%= image_tag "僧侶.png", class: "img-fluid rounded" %>
+        <div class="form-check mt-2">
+          <%= f.radio_button :avatar_type, "priest" %>
+          <label class="form-check-label">僧侶</label>
+        </div>
+      </div>
+
+      <!-- 盗賊 -->
+      <div class="col-md-3 text-center mb-4">
+        <%= image_tag "盗賊.png", class: "img-fluid rounded" %>
+        <div class="form-check mt-2">
+          <%= f.radio_button :avatar_type, "thief" %>
+          <label class="form-check-label">盗賊</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-3">
+      <%= f.submit "変更を保存", class: "btn btn-primary" %>
+    </div>
+
+  <% end %>
+</div>

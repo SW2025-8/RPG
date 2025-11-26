@@ -1,23 +1,29 @@
 class User < ApplicationRecord
-  # Devise モジュール
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
   has_many :quests, dependent: :destroy
 
-  # ★経験値を加算してレベルアップ処理を行うメソッド
-  def gain_exp(amount)
-    self.exp ||= 0
-    self.level ||= 1
-
+  def add_exp(amount)
     self.exp += amount
 
-    # 100 EXP でレベルアップ
     while self.exp >= 100
       self.exp -= 100
       self.level += 1
     end
 
     save
+  end
+
+  # avatar_type → 画像ファイル名
+  def avatar_image
+    case avatar_type
+    when "warrior" then "騎士.png"
+    when "mage"  then "魔法使い.png"
+    when "priest"  then "僧侶.png"
+    when "thief"   then "盗賊.png"
+    else
+      "騎士.png"
+    end
   end
 end

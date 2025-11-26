@@ -11,7 +11,9 @@ Rails.application.routes.draw do
     end
   end
 
-  # アバター選択（日本語UI）
+  # アバター選択（表示）
   get  "avatar", to: "users#avatar"
+
+  # アバター更新（編集保存）
   patch "avatar", to: "users#update_avatar"
 end
