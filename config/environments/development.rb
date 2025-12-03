@@ -6,7 +6,7 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 
   # Allow connections from Cloud9 / VocLabs
-  config.hosts << "d2da08a8285541b380d8fc46cb8011d8.vfs.cloud9.us-east-1.amazonaws.com"
+  config.hosts << "d71dadd3b34c4f5ea3a80c145b35593e.vfs.cloud9.us-east-1.amazonaws.com"
 
   # Enable/disable caching. By default caching is disabled.
   if Rails.root.join("tmp/caching-dev.txt").exist?
