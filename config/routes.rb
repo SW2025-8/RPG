@@ -16,4 +16,7 @@ Rails.application.routes.draw do
 
   # アバター更新（編集保存）
   patch "avatar", to: "users#update_avatar"
+
+  #lineapi_endpoint
+  post "/line_webhook", to: "line#webhook"
 end
