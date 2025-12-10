@@ -11,14 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # アバター選択（表示）
+  # アバター選択
   get  "avatar", to: "users#avatar"
-
-  # アバター更新（編集保存）
   patch "avatar", to: "users#update_avatar"
-
-  # =====================
-  # 🔥 安全に追加できる1行
-  # =====================
-  get "mypage", to: "users#mypage"
 end
