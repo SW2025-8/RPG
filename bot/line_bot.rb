@@ -1,7 +1,7 @@
 require 'net/http'
 require 'json'
 
-class LineBotService
+class LineBot
   LINE_API = "https://api.line.me/v2/bot/message/broadcast"
 
   def self.broadcast(message1, message2)
