@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  get "line_test/broadcast"
   devise_for :users
 
   # ホーム
@@ -12,15 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # アバター選択（表示）
+  # アバター選択
   get  "avatar", to: "users#avatar"
-
-  # アバター更新（編集保存）
   patch "avatar", to: "users#update_avatar"
-
-  #lineapi_endpoint
-  post "/line_webhook", to: "line#webhook"
-
-  #api test
-  get "/line_test", to: "line_test#broadcast"
 end

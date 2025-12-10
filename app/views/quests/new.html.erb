@@ -8,21 +8,76 @@
           <h1 class="card-title mb-4">新規クエスト作成</h1>
 
           <%= form_with(model: @quest, local: true) do |f| %>
-            
+
+            <!-- ▼ 大分類カテゴリ ▼ -->
             <div class="mb-3">
-              <%= f.label :title, "タイトル", class: "form-label" %>
-              <%= f.text_field :title, class: "form-control" %>
+              <%= f.label :category, "カテゴリ（大分類）", class: "form-label" %>
+              <%= f.select :category,
+                [
+                  ["勉強・学習", "勉強・学習"],
+                  ["家事・生活", "家事・生活"],
+                  ["仕事・作業", "仕事・作業"],
+                  ["健康・フィットネス", "健康・フィットネス"],
+                  ["用事・手続き", "用事・手続き"],
+                  ["自己管理", "自己管理"],
+                  ["趣味・創作", "趣味・創作"],
+                  ["人間関係・コミュニケーション", "人間関係・コミュニケーション"],
+                  ["金銭管理", "金銭管理"],
+                  ["メンタルケア", "メンタルケア"],
+                  ["外出・移動", "外出・移動"],
+                  ["雑務（その他）", "雑務（その他）"]
+                ],
+                { prompt: "選択してください" },
+                class: "form-control",
+                id: "category_select"
+              %>
             </div>
 
+            <!-- ▼ 小分類カテゴリ ▼ -->
+            <div class="mb-3">
+              <%= f.label :subcategory, "サブカテゴリ（小分類）", class: "form-label" %>
+              <%= f.select :subcategory,
+                [],
+                { prompt: "先にカテゴリを選んでください" },
+                class: "form-control",
+                id: "subcategory_select"
+              %>
+            </div>
+
+            <!-- ▼ 難易度（ボタン） ▼ -->
+            <div class="mb-3">
+              <label class="form-label">難易度</label>
+
+              <div class="btn-group d-flex" role="group">
+                <% [["初級", "初級"], ["中級", "中級"], ["上級", "上級"], ["超上級", "超上級"]].each do |label, value| %>
+
+                  <input type="radio"
+                         class="btn-check"
+                         name="quest[difficulty]"
+                         id="difficulty_<%= value %>"
+                         value="<%= value %>"
+                         autocomplete="off">
+
+                  <label class="btn btn-outline-primary"
+                         for="difficulty_<%= value %>"><%= label %></label>
+
+                <% end %>
+              </div>
+            </div>
+
+            <!-- ▼ タイトル ▼ -->
+            <div class="mb-3">
+              <%= f.label :title, "タイトル", class: "form-label" %>
+              <%= f.text_field :title, class: "form-control", id: "title_field" %>
+            </div>
+
+            <!-- ▼ 説明文 ▼ -->
             <div class="mb-3">
               <%= f.label :description, "説明文", class: "form-label" %>
               <%= f.text_area :description, rows: 5, class: "form-control" %>
             </div>
 
-            <div class="mb-3">
-              <%= f.label :exp_reward, "獲得経験値", class: "form-label" %>
-              <%= f.number_field :exp_reward, class: "form-control" %>
-            </div>
+            <!-- ここにあった exp_reward の欄は削除済み -->
 
             <div class="d-flex gap-2 mt-3">
               <%= f.submit "作成する", class: "btn btn-primary" %>
@@ -37,3 +92,57 @@
     </div>
   </div>
 </div>
+
+<script>
+  const SUBCATEGORIES = {
+    "勉強・学習": ["予習", "復習", "試験対策", "語学", "資格", "課題"],
+    "家事・生活": ["掃除", "洗濯", "料理", "買い物", "整理整頓", "ゴミ出し"],
+    "仕事・作業": ["資料作成", "会議準備", "調査", "メール処理", "報告書"],
+    "健康・フィットネス": ["散歩", "筋トレ", "ストレッチ", "ランニング", "ヨガ"],
+    "用事・手続き": ["病院", "役所", "銀行", "郵便", "買い出し"],
+    "自己管理": ["スケジュール整理", "目標設定", "日記", "片付け", "睡眠管理"],
+    "趣味・創作": ["音楽", "絵", "プログラミング", "ゲーム制作", "読書", "動画編集"],
+    "人間関係・コミュニケーション": ["友人との約束", "家族ケア", "連絡", "プレゼント準備"],
+    "金銭管理": ["家計簿", "支払い", "貯金", "資産管理"],
+    "メンタルケア": ["瞑想", "深呼吸", "休息", "リフレッシュ"],
+    "外出・移動": ["買い物", "散歩", "通学", "通勤"],
+    "雑務（その他）": ["その他"]
+  };
+
+  const categorySelect = document.getElementById("category_select");
+  const subSelect = document.getElementById("subcategory_select");
+  const titleField = document.getElementById("title_field");
+
+  function updateTitle() {
+    const c = categorySelect.value || "";
+    const s = subSelect.value || "";
+    if (c && s) {
+      titleField.value = `${c}：${s}`;
+    } else if (c) {
+      titleField.value = c;
+    }
+  }
+
+  categorySelect.addEventListener("change", function () {
+    const category = this.value;
+
+    subSelect.innerHTML = "";
+
+    if (SUBCATEGORIES[category]) {
+      SUBCATEGORIES[category].forEach(sub => {
+        const option = document.createElement("option");
+        option.value = sub;
+        option.textContent = sub;
+        subSelect.appendChild(option);
+      });
+    } else {
+      const option = document.createElement("option");
+      option.textContent = "先にカテゴリを選んでください";
+      subSelect.appendChild(option);
+    }
+
+    updateTitle();
+  });
+
+  subSelect.addEventListener("change", updateTitle);
+</script>

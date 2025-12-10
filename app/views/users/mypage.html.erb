@@ -1,0 +1,20 @@
+<!-- app/views/users/mypage.html.erb -->
+
+<div class="container mt-4">
+  <h2>マイページ</h2>
+
+  <div class="card mt-3">
+    <div class="card-body text-center">
+
+      <% if @user.avatar_type.present? %>
+        <img src="<%= asset_path(@user.avatar_image) %>" 
+             class="img-fluid" style="max-width: 150px;">
+      <% else %>
+        <p>アバター未設定</p>
+      <% end %>
+
+      <%= link_to "アバター変更", avatar_path, class: "btn btn-primary mt-3" %>
+
+    </div>
+  </div>
+</div>

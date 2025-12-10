@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_19_075339) do
+ActiveRecord::Schema[8.0].define(version: 2025_12_10_073132) do
   create_table "quests", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -18,6 +18,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_19_075339) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "category"
+    t.string "subcategory"
+    t.string "difficulty"
     t.index ["user_id"], name: "index_quests_on_user_id"
   end
 
@@ -32,6 +35,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_19_075339) do
     t.integer "level", default: 1
     t.integer "exp", default: 0
     t.string "avatar_type", default: "warrior"
+    t.integer "hp", default: 100
+    t.integer "mp", default: 30
+    t.integer "str", default: 10
+    t.integer "vit", default: 10
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

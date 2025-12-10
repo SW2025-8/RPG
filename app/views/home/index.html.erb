@@ -1,68 +1,43 @@
-<div class="container mt-4">
+<!-- app/views/home/index.html.erb -->
 
-  <div class="row">
+<div class="container-fluid mt-4">
 
-    <!-- ▼ 左：キャラ画像 -->
-    <div class="col-md-3 text-center">
-      <div class="card shadow-sm mb-3">
-        <div class="card-body">
-          <h5 class="mb-3">キャラクター</h5>
+  <div class="row justify-content-center">
 
-          <!-- ★ 選択済みアバター表示 -->
-          <%= image_tag current_user.avatar_image,
-                        class: "img-fluid rounded mb-2",
-                        alt: "avatar" %>
-
-          <div class="mt-2">
-            <a href="<%= avatar_path %>" class="btn btn-outline-primary btn-sm">
-              アバター変更
-            </a>
-          </div>
-
+    <!-- クエスト（横幅を広く） -->
+    <div class="col-md-8 mb-4">
+      <div class="card">
+        <div class="card-header">
+          クエスト
         </div>
-      </div>
-    </div>
 
-    <!-- ▼ 中央：クエスト一覧 -->
-    <div class="col-md-6">
-      <div class="card shadow-sm mb-3">
-        <div class="card-body">
-          <h3 class="mb-3">クエスト</h3>
-
-          <% if current_user.quests.any? %>
-            <% current_user.quests.each do |quest| %>
-              <div class="d-flex justify-content-between align-items-center border rounded p-2 mb-2">
-                <span><strong><%= quest.title %></strong></span>
-                <span class="text-success">+<%= quest.exp_reward %> exp</span>
-              </div>
-            <% end %>
-          <% else %>
-            <p class="text-muted">現在のクエストはありません</p>
+        <ul class="list-group list-group-flush">
+          <% @quests.each do |quest| %>
+            <li class="list-group-item d-flex justify-content-between">
+              <%= quest.title %>
+              <span>+<%= quest.exp_reward %> exp</span>
+            </li>
           <% end %>
+        </ul>
 
-          <div class="mt-3 text-end">
-            <a href="<%= new_quest_path %>" class="btn btn-primary btn-sm">+ クエスト追加</a>
-          </div>
+        <div class="card-body text-end">
+          <%= link_to "＋クエスト追加", new_quest_path, class: "btn btn-primary" %>
         </div>
       </div>
     </div>
 
-    <!-- ▼ 右：ステータス -->
-    <div class="col-md-3">
-      <div class="card shadow-sm mb-3">
+    <!-- ステータス（右側） -->
+    <div class="col-md-3 mb-4">
+      <div class="card">
+        <div class="card-header">ステータス</div>
         <div class="card-body">
-          <h5 class="mb-3">ステータス</h5>
+          
+          <p>レベル：<%= current_user.level %></p>
 
-          <p><strong>レベル：</strong> <%= current_user.level %></p>
-
-          <p><strong>経験値：</strong></p>
-
-          <!-- EXPバー -->
-          <div class="progress mb-2">
-            <div class="progress-bar bg-success"
-                 role="progressbar"
-                 style="width: <%= (current_user.exp.to_f).to_i %>%;">
-              <%= current_user.exp %>/100
+          <p>経験値：</p>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar"
+                 style="width: <%= current_user.exp %>%;">
             </div>
           </div>
 
@@ -71,13 +46,4 @@
     </div>
 
   </div>
-
-  <!-- ▼ 下メニュー -->
-  <div class="row mt-3">
-    <div class="col text-center">
-      <a href="#" class="btn btn-outline-primary me-2">ステータス画面</a>
-      <a href="#" class="btn btn-outline-secondary">成長グラフ</a>
-    </div>
-  </div>
-
 </div>

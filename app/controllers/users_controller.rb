@@ -1,5 +1,12 @@
+# app/controllers/users_controller.rb
+
 class UsersController < ApplicationController
   before_action :authenticate_user!
+
+  # マイページ
+  def mypage
+    @user = current_user
+  end
 
   # アバター選択画面
   def avatar
