@@ -1,0 +1,2 @@
+module LineTestHelper
+end

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "line_test/broadcast"
   devise_for :users
 
   # ホーム
@@ -19,4 +20,7 @@ Rails.application.routes.draw do
 
   #lineapi_endpoint
   post "/line_webhook", to: "line#webhook"
+
+  #api test
+  get "/line_test", to: "line_test#broadcast"
 end
