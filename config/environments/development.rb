@@ -51,4 +51,5 @@ Rails.application.configure do
 
   # comment to allow connections to local server.
   # config.hosts.clear
+  config.hosts << "d2da08a8285541b380d8fc46cb8011d8.vfs.cloud9.us-east-1.amazonaws.com"
 end

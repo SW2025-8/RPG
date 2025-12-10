@@ -11,6 +11,9 @@ Rails.application.routes.draw do
     end
   end
 
+  # マイページ（新規追加）
+  get "mypage", to: "users#mypage", as: :mypage
+
   # アバター選択
   get  "avatar", to: "users#avatar"
   patch "avatar", to: "users#update_avatar"

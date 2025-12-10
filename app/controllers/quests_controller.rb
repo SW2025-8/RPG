@@ -36,9 +36,26 @@ class QuestsController < ApplicationController
     redirect_to quests_path, notice: "削除しました"
   end
 
+  # ★ ここが今回の本番ロジック
   def complete
+    user = current_user
+
+    # 1. 敵の位置を1つ進める
+    user.battle_position += 1
+
+    # 2. ボスまで倒したら次のステージへ進む
+    if user.battle_position > 5
+      user.battle_stage += 1
+      user.battle_position = 1
+      user.stage_exp = 0
+    end
+
+    user.save!
+
+    # クエスト達成したら削除
     @quest.destroy
-    redirect_to quests_path, notice: "クエスト達成！"
+
+    redirect_to root_path, notice: "クエスト達成！次の敵が出現した！"
   end
 
   private
@@ -47,7 +64,6 @@ class QuestsController < ApplicationController
     @quest = current_user.quests.find(params[:id])
   end
 
-  # exp_reward を permit から外すのが今回の最重要ポイント
   def quest_params
     params.require(:quest).permit(
       :title,

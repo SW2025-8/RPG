@@ -26,9 +26,11 @@
       </div>
     </div>
 
-    <!-- ステータス（右側） -->
+    <!-- 右側：ステータス + バトル進行度 -->
     <div class="col-md-3 mb-4">
-      <div class="card">
+
+      <!-- ステータス -->
+      <div class="card mb-4">
         <div class="card-header">ステータス</div>
         <div class="card-body">
           
@@ -43,6 +45,25 @@
 
         </div>
       </div>
+
+      <!-- バトル進行度 -->
+      <div class="card">
+        <div class="card-header">バトル進行</div>
+        <div class="card-body">
+
+          <p>ステージ：<%= current_user.battle_stage %></p>
+          <p>位置：<%= current_user.battle_position %></p>
+
+          <p>ステージEXP：</p>
+          <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar"
+                 style="width: <%= current_user.stage_exp %>%;">
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
   </div>
