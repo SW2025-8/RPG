@@ -14,4 +14,8 @@ Rails.application.routes.draw do
   # アバター選択
   get  "avatar", to: "users#avatar"
   patch "avatar", to: "users#update_avatar"
+  
+  #LINEAPI
+  post "/line_webhook", to: "line#webhook"
+  get "/line_test", to: "line_test#broadcast"
 end
