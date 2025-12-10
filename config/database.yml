@@ -29,7 +29,7 @@ production:
     adapter: postgresql
     encoding: unicode
     pool: 5
-    database: mysite_8sgm
-    username: mysite_8sgm_user
+    database: mysite_fby6
+    username: mysite_fby6_user
     password: <%= ENV['MYSITE_DATABASE_PASSWORD'] %>
     url: <%= ENV['DATABASE_URL'] %>
