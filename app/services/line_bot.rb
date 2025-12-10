@@ -4,7 +4,7 @@ require 'json'
 class LineBot
   LINE_API = "https://api.line.me/v2/bot/message/broadcast"
 
-  def self.broadcast(message1, message2)
+  def self.broadcast
     uri = URI.parse(LINE_API)
 
     header = {
