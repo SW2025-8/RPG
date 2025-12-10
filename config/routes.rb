@@ -16,4 +16,9 @@ Rails.application.routes.draw do
 
   # アバター更新（編集保存）
   patch "avatar", to: "users#update_avatar"
+
+  # =====================
+  # 🔥 安全に追加できる1行
+  # =====================
+  get "mypage", to: "users#mypage"
 end

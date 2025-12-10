@@ -1,11 +1,9 @@
 class QuestsController < ApplicationController
-  before_action :set_quest, only: [:show, :edit, :update, :destroy, :complete]
+  before_action :authenticate_user!
+  before_action :set_quest, only: [:edit, :update, :destroy, :complete]
 
   def index
-    @quests = current_user.quests
-  end
-
-  def show
+    @quests = current_user.quests.order(created_at: :asc)
   end
 
   def new
@@ -14,8 +12,9 @@ class QuestsController < ApplicationController
 
   def create
     @quest = current_user.quests.new(quest_params)
+
     if @quest.save
-      redirect_to quests_path, notice: "クエストを作成しました！"
+      redirect_to quests_path, notice: "クエストを追加しました！"
     else
       render :new
     end
@@ -26,7 +25,7 @@ class QuestsController < ApplicationController
 
   def update
     if @quest.update(quest_params)
-      redirect_to quests_path, notice: "クエストを更新しました！"
+      redirect_to quests_path, notice: "更新しました！"
     else
       render :edit
     end
@@ -34,22 +33,28 @@ class QuestsController < ApplicationController
 
   def destroy
     @quest.destroy
-    redirect_to quests_path, notice: "クエストを削除しました。"
+    redirect_to quests_path, notice: "削除しました"
   end
 
-  # ★後で実装する complete アクションの土台（まだ中身は書かない）
   def complete
-    current_user.gain_exp(@quest.exp_reward)
     @quest.destroy
-    redirect_to quests_path, notice: "クエスト完了！EXP +#{@quest.exp_reward}"
+    redirect_to quests_path, notice: "クエスト達成！"
   end
 
+  private
 
   def set_quest
     @quest = current_user.quests.find(params[:id])
   end
 
+  # exp_reward を permit から外すのが今回の最重要ポイント
   def quest_params
-    params.require(:quest).permit(:title, :description, :exp_reward)
+    params.require(:quest).permit(
+      :title,
+      :description,
+      :category,
+      :subcategory,
+      :difficulty
+    )
   end
 end

@@ -34,6 +34,7 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarNav">
+
           <ul class="navbar-nav me-auto">
 
             <li class="nav-item">
@@ -44,24 +45,26 @@
               <a class="nav-link" href="<%= quests_path %>">クエスト一覧</a>
             </li>
 
+            <!-- ▼ ここが追加された「マイページ」 ▼ -->
+            <li class="nav-item">
+              <a class="nav-link" href="<%= mypage_path %>">マイページ</a>
+            </li>
+
           </ul>
 
           <ul class="navbar-nav">
-
             <li class="nav-item">
               <%= button_to "ログアウト",
                     destroy_user_session_path,
                     method: :delete,
                     class: "btn btn-outline-light btn-sm" %>
             </li>
-
           </ul>
 
         </div>
       </div>
     </nav>
     <!-- ▲ ナビゲーションバー ▲ -->
-
 
     <div class="container">
       <%= yield %>
