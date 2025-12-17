@@ -67,3 +67,6 @@ end
 
 gem 'rails-i18n'
 gem 'devise'
+# Gemfile
+gem 'whenever', require: false
+

@@ -20,5 +20,4 @@ Rails.application.routes.draw do
   
   #LINEAPI
   post "/line_webhook", to: "line#webhook"
-  get "/line_test", to: "line_test#broadcast"
 end
