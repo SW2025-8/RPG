@@ -1,35 +1,117 @@
 /*
- * This is a manifest file that'll be compiled into application.css.
- *
- * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
- * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
- * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
- * depending on specificity.
- *
- * Consider organizing styles into separate files for maintainability.
+ * Undertale風 UI（最終・視認性修正）
  */
 
-/* ▼▼▼ ここからRPG風カスタム ▼▼▼ */
+/* ===== 地面 ===== */
 
-/* 全体背景：RPGゲームっぽい草原・ドット背景にできる */
+html,
 body {
-  background-image: url("rpg_background.png"); /* ← この画像を後で用意する */
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: #000 !important;
+  color: #fff !important;
+  height: 100%;
+  margin: 0;
 }
 
-/* カードを浮き上がらせてRPGメニュー風に */
-.card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(4px);
-  border-radius: 10px;
+/* ===== レイアウト全体 ===== */
+
+.container,
+.container-fluid,
+.row,
+[class^="col-"],
+[class*=" col-"] {
+  background-color: #000 !important;
+  color: #fff !important;
 }
 
-/* RPG風フォントを乗せる準備（あとでSTEP2で追加） */
-.rpg-font {
-  font-family: "PressStart2P", sans-serif;
+/* ===== 文字色を白で統一 ===== */
+
+p,
+span,
+td,
+th,
+li,
+label,
+small,
+div {
+  color: #fff !important;
 }
 
-/* ▼▼▼ RPGカスタムここまで ▼▼▼ */
+.text-muted,
+.text-secondary,
+.text-body-secondary {
+  color: #fff !important;
+}
+
+/* ===== カード ===== */
+
+.card,
+.card-body {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+/* ===== ★ クエスト一覧の正体ここ ★ ===== */
+
+.list-group,
+.list-group-item {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+}
+
+/* ホバー時（Undertale風） */
+.list-group-item:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+/* ===== テーブル（他ページ用） ===== */
+
+.table,
+.table th,
+.table td {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+}
+
+/* ===== ボタン ===== */
+
+.btn {
+  background-color: #000 !important;
+  color: #fff !important;
+  border: 2px solid #fff !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+/* ===== アクセント ===== */
+
+.btn-primary,
+.btn-success {
+  background-color: #f1c40f !important;
+  color: #000 !important;
+  border: 2px solid #fff !important;
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+  background-color: #fff !important;
+  color: #f1c40f !important;
+}
+
+/* ===== 見出し ===== */
+
+h1, h2, h3, h4, h5 {
+  color: #fff !important;
+}

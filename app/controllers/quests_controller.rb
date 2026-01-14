@@ -36,14 +36,16 @@ class QuestsController < ApplicationController
     redirect_to quests_path, notice: "削除しました"
   end
 
-  # ★ ここが今回の本番ロジック
+  # ★ クエスト達成
   def complete
     user = current_user
 
-    # 1. 敵の位置を1つ進める
+    # ===== 経験値獲得（ここが不足していた） =====
+    user.add_exp(@quest.exp) if @quest.respond_to?(:exp)
+
+    # ===== バトル進行 =====
     user.battle_position += 1
 
-    # 2. ボスまで倒したら次のステージへ進む
     if user.battle_position > 5
       user.battle_stage += 1
       user.battle_position = 1

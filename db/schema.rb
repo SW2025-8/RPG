@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_12_10_083422) do
+ActiveRecord::Schema[8.0].define(version: 2026_01_14_071129) do
+  create_table "login_logs", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.date "login_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_login_logs_on_user_id"
+  end
+
   create_table "quests", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -46,5 +54,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_12_10_083422) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "login_logs", "users"
   add_foreign_key "quests", "users"
 end

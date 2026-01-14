@@ -1,0 +1,20 @@
+/* ドット風 枠ルール */
+
+.card,
+.btn,
+.table,
+.navbar {
+  border-radius: 0 !important;
+}
+
+.card,
+.table,
+.table th,
+.table td {
+  border: 2px solid #000 !important;
+}
+
+.card,
+.btn {
+  box-shadow: 4px 4px 0 #000;
+}

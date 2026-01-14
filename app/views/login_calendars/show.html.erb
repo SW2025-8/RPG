@@ -1,0 +1,73 @@
+<div class="container-fluid">
+
+  <h2 class="mb-3 text-center">
+    <%= @month.strftime("%Y年 %m月") %> ログインカレンダー
+  </h2>
+
+  <div class="d-flex justify-content-between mb-3">
+    <%= link_to "← 前月", login_calendar_path(month: @month.prev_month),
+          class: "btn btn-outline-secondary" %>
+
+    <%= link_to "翌月 →", login_calendar_path(month: @month.next_month),
+          class: "btn btn-outline-secondary" %>
+  </div>
+
+  <table class="table table-bordered text-center align-middle"
+         style="width: 100%; table-layout: fixed; font-size: 1.1rem;">
+
+    <thead class="table-dark">
+      <tr>
+        <% %w(日 月 火 水 木 金 土).each do |w| %>
+          <th><%= w %></th>
+        <% end %>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% first_wday = @start_date.wday %>
+      <% days = (@start_date..@end_date).to_a %>
+      <% (0...first_wday).each { days.unshift(nil) } %>
+
+      <% days.each_slice(7) do |week| %>
+        <tr style="height: 150px;">
+          <% week.each do |day| %>
+            <% logged_in = day && @login_dates.include?(day) %>
+
+            <td
+              style="
+                position: relative;
+                <% if logged_in %>
+                  background: linear-gradient(135deg, #fff7cc, #ffe066);
+                  border: 3px solid #f1c40f;
+                <% end %>
+              "
+            >
+              <% if day %>
+                <!-- 日付（左上固定） -->
+                <div style="position: absolute; top: 6px; left: 8px; font-weight: bold;">
+                  <%= day.day %>
+                </div>
+
+                <% if logged_in %>
+                  <!-- スタンプ：マス内いっぱい -->
+                  <div
+                    style="
+                      height: 100%;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    <%= image_tag "login_stamp.png",
+                          style: "max-width: 80%; max-height: 80%;" %>
+                  </div>
+                <% end %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+</div>
