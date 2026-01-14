@@ -2,6 +2,8 @@ Rails.application.configure do
   # Reload code between requests.
   config.enable_reloading = true
 
+  config.eager_load = false
+
   # Show full error reports.
   config.consider_all_requests_local = true
 

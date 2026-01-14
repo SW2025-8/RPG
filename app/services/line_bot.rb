@@ -14,7 +14,7 @@ class LineBot
 
     body = {
       messages: [
-        { type: "text", text: "おはよう! 調子はどう? クエストに挑戦しよう!" }
+        { type: "text", text: "おはよう! 調子はどう? クエストに挑戦しよう!\nクエストへの挑戦はここから→https://rpg-ebtm.onrender.com" }
       ]
     }.to_json
 

@@ -43,10 +43,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_01_14_071129) do
     t.integer "level", default: 1
     t.integer "exp", default: 0
     t.string "avatar_type", default: "warrior"
-    t.integer "hp", default: 100
-    t.integer "mp", default: 30
-    t.integer "str", default: 10
-    t.integer "vit", default: 10
     t.integer "battle_stage", default: 1
     t.integer "battle_position", default: 1
     t.integer "stage_exp", default: 0
