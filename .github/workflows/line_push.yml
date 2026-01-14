@@ -1,0 +1,29 @@
+name: LINE Daily Push
+
+on:
+  schedule:
+    # 毎日 7:00 JST = 22:00 UTC
+    - cron: '0 22 * * *'
+  workflow_dispatch: # 手動実行もできる（デバッグ用）
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+
+      - name: Run LINE job
+        env:
+          RAILS_ENV: production
+          LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
+        run: |
+          bin/rails runner 'TimeTestJob.perform_now'
+
