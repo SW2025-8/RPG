@@ -23,6 +23,7 @@ jobs:
       - name: Run LINE job
         env:
           RAILS_ENV: production
+          SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
         run: |
           bin/rails runner 'TimeTestJob.perform_now'
