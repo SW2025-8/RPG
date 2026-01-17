@@ -9,24 +9,36 @@
 
           <%= form_with(model: @quest, local: true) do |f| %>
 
+            <!-- タイトル -->
             <div class="mb-3">
               <%= f.label :title, "タイトル", class: "form-label" %>
               <%= f.text_field :title, class: "form-control" %>
             </div>
 
+            <!-- 説明文 -->
             <div class="mb-3">
               <%= f.label :description, "説明文", class: "form-label" %>
               <%= f.text_area :description, rows: 5, class: "form-control" %>
             </div>
 
-            <div class="mb-3">
+            <!-- 獲得経験値（表示のみ・編集不可） -->
+            <div class="mb-4">
               <%= f.label :exp_reward, "獲得経験値", class: "form-label" %>
-              <%= f.number_field :exp_reward, class: "form-control" %>
+              <input type="text"
+                     class="form-control"
+                     value="<%= @quest.exp_reward %>"
+                     readonly>
+              <small class="text-muted">
+                ※ 獲得経験値は難易度により自動で決まります
+              </small>
             </div>
 
-            <div class="d-flex gap-2 mt-3">
+            <!-- ボタン：右下寄せ -->
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <a href="<%= quests_path %>" class="btn btn-secondary">
+                一覧へ戻る
+              </a>
               <%= f.submit "更新する", class: "btn btn-warning" %>
-              <a href="<%= quests_path %>" class="btn btn-secondary">一覧へ戻る</a>
             </div>
 
           <% end %>

@@ -11,15 +11,50 @@
           <%= form_with url: avatar_path, method: :patch, local: true do %>
 
             <% @avatar_options.each do |value, label| %>
-              <div class="form-check mb-2">
-                <%= radio_button_tag :avatar_type, value, current_user.avatar_type == value, class: "form-check-input" %>
-                <%= label_tag :avatar_type, label, class: "form-check-label" %>
+              <% traits = User::AVATAR_TRAITS[value] %>
+
+              <div class="mb-3">
+
+                <!-- 本物の radio（非表示） -->
+                <%= radio_button_tag :avatar_type, value,
+                      current_user.avatar_type == value,
+                      id: "avatar_#{value}",
+                      class: "avatar-radio" %>
+
+                <!-- 見た目用 label -->
+                <label for="avatar_<%= value %>" class="avatar-label">
+                  <span class="avatar-dot"></span>
+                  <strong><%= label %></strong>
+                </label>
+
+                <!-- 特性 -->
+                <div class="ms-4 mt-1 small">
+                  <div>
+                    <strong>得意：</strong>
+                    <span class="text-success">
+                      <%= traits[:good].join(" / ") %>
+                    </span>
+                  </div>
+                  <div>
+                    <strong>苦手：</strong>
+                    <span class="text-danger">
+                      <%= traits[:bad].join(" / ") %>
+                    </span>
+                  </div>
+                </div>
+
               </div>
             <% end %>
 
-            <div class="mt-3">
-              <button type="submit" class="btn btn-primary">決定する</button>
-              <a href="<%= root_path %>" class="btn btn-secondary">戻る</a>
+            <!-- ▼ ボタン（左右に分離） -->
+            <div class="mt-4 d-flex justify-content-between align-items-end">
+              <a href="<%= root_path %>" class="btn btn-secondary">
+                戻る
+              </a>
+
+              <button type="submit" class="btn btn-primary">
+                決定する
+              </button>
             </div>
 
           <% end %>

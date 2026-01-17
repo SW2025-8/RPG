@@ -1,21 +1,106 @@
 <!-- app/views/home/index.html.erb -->
 
-<div class="container-fluid mt-4">
+<div class="container-fluid mt-4 mb-4">
+  <div class="row justify-content-center">
+    <div class="col-md-11">
 
+      <div class="card
+           <%= 'border border-danger border-4' if current_user.battle_position == 5 %>">
+        <div class="card-header text-center">
+          バトル進行
+        </div>
+
+        <div class="card-body d-flex justify-content-between align-items-center position-relative battle-field"
+             style="
+               background-image: url('<%= asset_path(
+                 current_user.battle_position == 5 ? 'battle_bg_boss.png' : 'battle_bg.png'
+               ) %>');
+               background-size: cover;
+               background-position:
+                 <%= current_user.battle_position == 5 ? 'center 85%' : 'center 70%' %>;
+               background-repeat: no-repeat;
+               min-height: 240px;
+             ">
+
+          <% if current_user.hp <= 0 %>
+            <div class="position-absolute top-0 start-0 w-100 h-100"
+                 style="background: rgba(0,0,0,0.7); z-index: 5;"></div>
+            <div class="position-absolute top-50 start-50 translate-middle
+                        text-danger fw-bold"
+                 style="font-size: 4rem; z-index: 10;">
+              GAME OVER
+            </div>
+          <% end %>
+
+          <!-- プレイヤー -->
+          <div class="text-center" style="z-index: 1;">
+            <%= image_tag current_user.avatar_image, style: "max-width: 120px;" %>
+            <div class="mt-2">
+              <%= render "shared/heart_hp" %>
+            </div>
+          </div>
+
+          <!-- 中央 -->
+          <div class="text-center" style="z-index: 1;">
+            <h2>VS</h2>
+            <p class="mb-0">
+              ステージ <%= current_user.battle_stage %> /
+              位置 <%= current_user.battle_position %>
+            </p>
+            <% if current_user.battle_position == 5 %>
+              <p class="text-danger fw-bold mt-1">BOSS</p>
+            <% end %>
+          </div>
+
+          <!-- 敵 -->
+          <div class="text-center" style="z-index: 1;">
+            <%= image_tag "enemy_#{current_user.battle_position}.png",
+                  style: "max-width: 120px;",
+                  onerror: "this.style.display='none';" %>
+
+            <% enemy_hp     = current_user.current_hp || current_user.enemy_max_hp %>
+            <% enemy_max_hp = current_user.enemy_max_hp %>
+            <% hp_rate      = (enemy_hp.to_f / enemy_max_hp * 100).clamp(0, 100) %>
+
+            <div class="mt-2 text-start" style="width: 120px;">
+              <small class="text-white">
+                HP <%= enemy_hp %> / <%= enemy_max_hp %>
+              </small>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-danger"
+                     role="progressbar"
+                     style="width: <%= hp_rate %>%;">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ▼ ホーム画面 ▼ -->
+<div class="container-fluid mt-4">
   <div class="row justify-content-center">
 
-    <!-- クエスト（横幅を広く） -->
     <div class="col-md-8 mb-4">
       <div class="card">
-        <div class="card-header">
-          クエスト
-        </div>
+        <div class="card-header">クエスト</div>
 
         <ul class="list-group list-group-flush">
           <% @quests.each do |quest| %>
-            <li class="list-group-item d-flex justify-content-between">
-              <%= quest.title %>
-              <span>+<%= quest.exp_reward %> exp</span>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <div>
+                <strong><%= quest.title %></strong>
+                <span class="ms-2">+<%= quest.exp_reward %> exp</span>
+              </div>
+              <%= button_to "完了",
+                    complete_quest_path(quest),
+                    method: :patch,
+                    class: "btn btn-success btn-sm" %>
             </li>
           <% end %>
         </ul>
@@ -26,45 +111,85 @@
       </div>
     </div>
 
-    <!-- 右側：ステータス + バトル進行度 -->
+    <!-- 右側 -->
     <div class="col-md-3 mb-4">
-
-      <!-- ステータス -->
       <div class="card mb-4">
         <div class="card-header">ステータス</div>
         <div class="card-body">
-          
           <p>レベル：<%= current_user.level %></p>
-
           <p>経験値：</p>
-          <div class="progress">
-            <div class="progress-bar" role="progressbar"
-                 style="width: <%= current_user.exp %>%;">
+          <div class="progress mb-2">
+            <div class="progress-bar bg-success"
+                 role="progressbar"
+                 style="width: <%= current_user.exp_rate %>%;">
             </div>
           </div>
 
+          <p class="mb-2">
+            所持コイン：<strong><%= current_user.coins %></strong>
+          </p>
+
+          <%= link_to "ショップへ", shop_path,
+                class: "btn btn-outline-warning btn-sm mt-2 w-100" %>
+
+          <%= link_to "持ち物", inventory_path,
+                class: "btn btn-outline-info btn-sm mt-2 w-100" %>
         </div>
       </div>
 
-      <!-- バトル進行度 -->
       <div class="card">
         <div class="card-header">バトル進行</div>
         <div class="card-body">
-
           <p>ステージ：<%= current_user.battle_stage %></p>
           <p>位置：<%= current_user.battle_position %></p>
+        </div>
+      </div>
+    </div>
 
-          <p>ステージEXP：</p>
-          <div class="progress">
-            <div class="progress-bar bg-success" role="progressbar"
-                 style="width: <%= current_user.stage_exp %>%;">
+  </div>
+</div>
+
+<!-- ▼ アバター＋特性（ホーム下部：横幅最大） ▼ -->
+<div class="container-fluid mt-4 mb-4">
+  <div class="row justify-content-center">
+    <!-- ★ ここをフル幅に -->
+    <div class="col-md-11">
+
+      <div class="card">
+        <div class="card-body d-flex align-items-center justify-content-center gap-5">
+
+          <!-- アバター画像 -->
+          <div class="text-center">
+            <%= image_tag current_user.avatar_image,
+                  class: "img-fluid",
+                  style: "max-width: 140px;" %>
+            <div class="mt-2">
+              <%= link_to "アバター変更", avatar_path, class: "btn btn-warning btn-sm" %>
             </div>
+          </div>
+
+          <!-- 特性表示 -->
+          <div>
+            <% traits = User::AVATAR_TRAITS[current_user.avatar_type] %>
+
+            <p class="mb-1">
+              <strong>得意</strong>：
+              <span class="text-success">
+                <%= traits[:good].join(" / ") %>
+              </span>
+            </p>
+
+            <p class="mb-0">
+              <strong>苦手</strong>：
+              <span class="text-danger">
+                <%= traits[:bad].join(" / ") %>
+              </span>
+            </p>
           </div>
 
         </div>
       </div>
 
     </div>
-
   </div>
 </div>

@@ -1,0 +1,40 @@
+<div class="container mt-4">
+  <h2>ショップ</h2>
+
+  <div class="mb-3 d-flex gap-2">
+    <%= link_to "ホームへ戻る", root_path, class: "btn btn-outline-secondary btn-sm" %>
+    <%= link_to "持ち物", inventory_path, class: "btn btn-outline-info btn-sm" %>
+  </div>
+
+  <p class="mb-3">
+    所持コイン：<strong><%= current_user.coins %></strong>
+  </p>
+
+  <div class="row">
+    <% @items.each do |item| %>
+      <div class="col-md-4 mb-4">
+        <div class="card text-center">
+          <div class="card-body">
+
+            <%= image_tag item.image_name,
+                  class: "img-fluid mb-2",
+                  style: "max-height: 80px;",
+                  onerror: "this.style.display='none';" %>
+
+            <h5 class="card-title"><%= item.name %></h5>
+
+            <p class="mb-1">
+              価格：<%= item.price %> コイン
+            </p>
+
+            <%= button_to "購入",
+                  buy_item_path(item),
+                  method: :post,
+                  class: "btn btn-warning btn-sm" %>
+
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,8 +1,10 @@
 /*
- * Undertale風 UI（最終・視認性修正）
+ * Undertale風 UI（整理・最終版）
  */
 
-/* ===== 地面 ===== */
+/* =========================
+   基本（背景・文字）
+   ========================= */
 
 html,
 body {
@@ -11,8 +13,6 @@ body {
   height: 100%;
   margin: 0;
 }
-
-/* ===== レイアウト全体 ===== */
 
 .container,
 .container-fluid,
@@ -23,63 +23,107 @@ body {
   color: #fff !important;
 }
 
-/* ===== 文字色を白で統一 ===== */
-
 p,
 span,
 td,
 th,
 li,
 label,
-small,
-div {
+small {
   color: #fff !important;
 }
 
 .text-muted,
-.text-secondary,
-.text-body-secondary {
+.form-text {
   color: #fff !important;
+  opacity: 0.85 !important;
 }
 
-/* ===== カード ===== */
+/* =========================
+   カード
+   ========================= */
 
 .card,
 .card-body {
   background-color: #000 !important;
   color: #fff !important;
+}
+
+.card {
   border: 2px solid #fff !important;
   border-radius: 0 !important;
   box-shadow: none !important;
 }
 
-/* ===== ★ クエスト一覧の正体ここ ★ ===== */
+/* =========================
+   バトルフィールド
+   ========================= */
+
+.card-body.battle-field {
+  position: relative;
+  background-color: transparent !important;
+  min-height: 240px;
+  overflow: hidden;
+}
+
+.card-body.battle-field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: image-url("battle_bg.png");
+  background-size: cover;
+  background-position: center 70%;
+  background-repeat: no-repeat;
+  filter: brightness(0.75);
+  z-index: 0;
+}
+
+.card-body.battle-field.boss-battle::before {
+  background-image: image-url("battle_bg_boss.png");
+  filter: brightness(0.65);
+}
+
+.card-body.battle-field > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================
+   クエスト一覧 / テーブル
+   ========================= */
 
 .list-group,
-.list-group-item {
-  background-color: #000 !important;
-  color: #fff !important;
-  border: 2px solid #fff !important;
-  border-radius: 0 !important;
-}
-
-/* ホバー時（Undertale風） */
-.list-group-item:hover {
-  background-color: #fff !important;
-  color: #000 !important;
-}
-
-/* ===== テーブル（他ページ用） ===== */
-
+.list-group-item,
 .table,
 .table th,
 .table td {
   background-color: #000 !important;
   color: #fff !important;
   border: 2px solid #fff !important;
+  border-radius: 0 !important;
 }
 
-/* ===== ボタン ===== */
+.list-group-item:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+/* =========================
+   フォーム
+   ========================= */
+
+input[readonly],
+textarea[readonly],
+input:disabled,
+textarea:disabled {
+  background-color: #000 !important;
+  color: #fff !important;
+  opacity: 1 !important;
+}
+
+/* =========================
+   ボタン：共通（Undertale風）
+   ========================= */
 
 .btn {
   background-color: #000 !important;
@@ -95,23 +139,217 @@ div {
   color: #000 !important;
 }
 
-/* ===== アクセント ===== */
-
-.btn-primary,
-.btn-success {
-  background-color: #f1c40f !important;
-  color: #000 !important;
-  border: 2px solid #fff !important;
+.btn:disabled,
+.btn.disabled {
+  color: #fff !important;
+  opacity: 0.6 !important;
 }
 
-.btn-primary:hover,
-.btn-success:hover {
-  background-color: #fff !important;
+/* =========================
+   アクセント（黄色）
+   ========================= */
+
+/* +クエスト追加 等 */
+a.btn.btn-primary {
+  background-color: #000 !important;
+  color: #f1c40f !important;
+  border: 2px solid #f1c40f !important;
+  text-decoration: none !important;
+}
+
+a.btn.btn-primary:hover {
+  background-color: #f1c40f !important;
+  color: #000 !important;
+}
+
+/* 完了・攻撃ボタン */
+button.btn.btn-success {
+  background-color: #000 !important;
+  color: #f1c40f !important;
+  border: 2px solid #f1c40f !important;
+}
+
+button.btn.btn-success:hover {
+  background-color: #f1c40f !important;
+  color: #000 !important;
+}
+
+/* =========================
+   HP / EXP
+   ========================= */
+
+.progress {
+  border: 2px solid #fff !important;
+  background-color: #000 !important;
+  border-radius: 0 !important;
+}
+
+.progress-bar {
+  border-radius: 0 !important;
+  transition: width 0.4s ease;
+}
+
+.progress-bar.bg-danger {
+  background-color: #F30100 !important;
+}
+
+.progress-bar.bg-success {
+  background-color: #5AFF19 !important;
+}
+
+/* =========================
+   難易度ボタン
+   ========================= */
+
+.btn-check:checked + .btn-outline-warning {
+  background-color: #f1c40f !important;
+  color: #000 !important;
+  border-color: #fff !important;
+  font-weight: bold;
+}
+
+.btn-outline-warning:hover {
+  color: #000 !important;
+}
+
+/* =========================
+   スライダー（range）
+   ========================= */
+
+/* Chrome / Edge / Safari */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #ffc107;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Firefox */
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #ffc107;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+/* =========================
+   アバター選択：自作ラジオ（最小構成）
+   ========================= */
+
+/* 本物の radio を隠す */
+.avatar-radio {
+  display: none;
+}
+
+/* ラベル */
+.avatar-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+/* 点（未選択） */
+.avatar-dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid #f1c40f;
+  border-radius: 50%;
+}
+
+/* 選択時：中を黄色 */
+.avatar-radio:checked + .avatar-label .avatar-dot {
+  background-color: #f1c40f;
+}
+
+/* =========================
+   アバター選択：決定ボタン
+   ========================= */
+
+button.btn.btn-primary {
+  background-color: #000 !important;
+  border: 2px solid #f1c40f !important;
   color: #f1c40f !important;
 }
 
-/* ===== 見出し ===== */
+button.btn.btn-primary:hover {
+  background-color: #111 !important;
+  color: #ffd54f !important;
+  border-color: #ffd54f !important;
+}
 
-h1, h2, h3, h4, h5 {
-  color: #fff !important;
+/* =========================
+   アバター特性 色（最終上書き）
+   ========================= */
+
+span.text-success {
+  color: #5AFF19 !important; /* 得意 */
+}
+
+span.text-danger {
+  color: #F30100 !important; /* 不得意 */
+}
+
+/* =========================
+   text-danger 最終強制上書き
+   ========================= */
+
+.text-danger,
+.text-danger *,
+div.text-danger,
+span.text-danger,
+p.text-danger {
+  color: #F30100 !important;
+}
+
+/* =========================
+   期限が近いクエスト枠（段階太さ）
+   ========================= */
+
+/* 共通（通常行は何もしない） */
+tr.due-7days td,
+tr.due-3days td,
+tr.due-1day td {
+  position: relative;
+}
+
+/* 7日以内：オレンジ（細） */
+tr.due-7days td {
+  box-shadow: inset 0 0 0 2px #ff9800;
+}
+
+/* 3日以内：赤（中） */
+tr.due-3days td {
+  box-shadow: inset 0 0 0 3px #F30100;
+}
+
+/* 1日以内：紫（太） */
+tr.due-1day td {
+  box-shadow: inset 0 0 0 4px #b84cff;
+}
+/* =========================
+   期限切れクエスト（極限ブラック）
+   ========================= */
+
+tr.due-expired td {
+  background-color: #000 !important; /* 完全黒 */
+  color: #222 !important;            /* ほぼ見えないが判別可 */
+  box-shadow: none !important;
+}
+
+/* ボタンは存在感ほぼゼロ */
+tr.due-expired .btn {
+  opacity: 0.18;
+}
+
+/* 完了ボタンも完全沈没 */
+tr.due-expired .btn-success {
+  background-color: #000 !important;
+  color: #222 !important;
+  border-color: #111 !important;
 }

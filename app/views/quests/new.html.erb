@@ -44,25 +44,38 @@
               %>
             </div>
 
-            <!-- ▼ 難易度（ボタン） ▼ -->
+            <!-- ▼ 難易度（時間スライダー） ▼ -->
             <div class="mb-3">
-              <label class="form-label">難易度</label>
+              <label class="form-label">所要時間（目安）</label>
 
-              <div class="btn-group d-flex" role="group">
-                <% [["初級", "初級"], ["中級", "中級"], ["上級", "上級"], ["超上級", "超上級"]].each do |label, value| %>
+              <%= f.hidden_field :difficulty, id: "difficulty_field" %>
 
-                  <input type="radio"
-                         class="btn-check"
-                         name="quest[difficulty]"
-                         id="difficulty_<%= value %>"
-                         value="<%= value %>"
-                         autocomplete="off">
+              <input type="range"
+                     class="form-range"
+                     id="time_slider"
+                     min="0"
+                     max="120"
+                     step="5"
+                     value="30">
 
-                  <label class="btn btn-outline-primary"
-                         for="difficulty_<%= value %>"><%= label %></label>
-
-                <% end %>
+              <div class="mt-2">
+                <strong id="time_label">30分</strong>
               </div>
+              <div class="mt-1">
+                <span id="difficulty_label">難易度：初級</span>
+              </div>
+              <div class="text-muted small mt-1" id="difficulty_desc">
+                ～30分｜軽いタスク
+              </div>
+            </div>
+
+            <!-- ▼ 期限（追加） ▼ -->
+            <div class="mb-3">
+              <%= f.label :due_date, "期限（任意）", class: "form-label" %>
+              <%= f.date_field :due_date, class: "form-control" %>
+              <small class="form-text">
+                未設定の場合は「期限なし」として扱われます
+              </small>
             </div>
 
             <!-- ▼ タイトル ▼ -->
@@ -77,11 +90,10 @@
               <%= f.text_area :description, rows: 5, class: "form-control" %>
             </div>
 
-            <!-- ここにあった exp_reward の欄は削除済み -->
-
-            <div class="d-flex gap-2 mt-3">
-              <%= f.submit "作成する", class: "btn btn-primary" %>
-              <a href="<%= quests_path %>" class="btn btn-secondary">一覧へ戻る</a>
+            <!-- ▼ ボタン ▼ -->
+            <div class="d-flex justify-content-between mt-4">
+              <%= link_to "一覧へ戻る", quests_path, class: "btn btn-secondary" %>
+              <%= f.submit "作成する", class: "btn btn-warning" %>
             </div>
 
           <% end %>
@@ -128,6 +140,11 @@
 
     subSelect.innerHTML = "";
 
+    const prompt = document.createElement("option");
+    prompt.value = "";
+    prompt.textContent = "先にカテゴリを選んでください";
+    subSelect.appendChild(prompt);
+
     if (SUBCATEGORIES[category]) {
       SUBCATEGORIES[category].forEach(sub => {
         const option = document.createElement("option");
@@ -135,14 +152,50 @@
         option.textContent = sub;
         subSelect.appendChild(option);
       });
-    } else {
-      const option = document.createElement("option");
-      option.textContent = "先にカテゴリを選んでください";
-      subSelect.appendChild(option);
     }
 
     updateTitle();
   });
 
   subSelect.addEventListener("change", updateTitle);
+
+  // ▼ スライダー処理
+  const slider = document.getElementById("time_slider");
+  const timeLabel = document.getElementById("time_label");
+  const diffLabel = document.getElementById("difficulty_label");
+  const diffDesc  = document.getElementById("difficulty_desc");
+  const diffField = document.getElementById("difficulty_field");
+
+  function updateDifficulty(val) {
+    let diff, desc, timeText;
+
+    if (val <= 30) {
+      diff = "初級";
+      desc = "～30分｜軽いタスク";
+      timeText = `${val}分`;
+    } else if (val <= 60) {
+      diff = "中級";
+      desc = "～60分｜集中が必要";
+      timeText = `${val}分`;
+    } else if (val < 120) {
+      diff = "上級";
+      desc = "～120分｜しっかり作業";
+      timeText = `${val}分`;
+    } else {
+      diff = "超上級";
+      desc = "120分以上｜覚悟がいる";
+      timeText = "120分以上";
+    }
+
+    timeLabel.textContent = timeText;
+    diffLabel.textContent = `難易度：${diff}`;
+    diffDesc.textContent  = desc;
+    diffField.value = diff;
+  }
+
+  slider.addEventListener("input", e => {
+    updateDifficulty(parseInt(e.target.value, 10));
+  });
+
+  updateDifficulty(parseInt(slider.value, 10));
 </script>

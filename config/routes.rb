@@ -14,13 +14,18 @@ Rails.application.routes.draw do
   # マイページ
   get "mypage", to: "users#mypage", as: :mypage
 
-  # ログインカレンダー（追加）
-  get "login_calendar", to: "login_calendars#show"
+  # ショップ
+  get  "shop", to: "shop#index", as: :shop
+  post "shop/buy/:item_id", to: "shop#buy", as: :buy_item
 
-  # アバター選択
+  # 持ち物
+  get  "inventory", to: "inventory#index", as: :inventory
+  post "inventory/use/:id", to: "inventory#use", as: :use_item
+
+  # アバター
   get  "avatar", to: "users#avatar"
   patch "avatar", to: "users#update_avatar"
-  
+
   # LINE API
   post "/line_webhook", to: "line#webhook"
 end

@@ -1,0 +1,17 @@
+<%# hp(0〜10) を 5ハート表示に変換 %>
+<% hp = current_user.hp || 0 %>
+<% max_hearts = 5 %>
+
+<div class="d-flex align-items-center" style="gap:4px;">
+  <% max_hearts.times do |i| %>
+    <% heart_hp = hp - (i * 2) %>
+
+    <% if heart_hp >= 2 %>
+      <%= image_tag "heart_full.png", size: "20x20" %>
+    <% elsif heart_hp == 1 %>
+      <%= image_tag "heart_half.png", size: "20x20" %>
+    <% else %>
+      <%= image_tag "heart_empty.png", size: "20x20" %>
+    <% end %>
+  <% end %>
+</div>

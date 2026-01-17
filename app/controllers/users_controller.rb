@@ -4,6 +4,13 @@ class UsersController < ApplicationController
   # マイページ
   def mypage
     @user = current_user
+
+    # ▼ カレンダー用（ログインカレンダーと同等） ▼
+    @month = params[:month] ? Date.parse(params[:month]) : Date.current
+    @start_date = @month.beginning_of_month.beginning_of_week(:sunday)
+    @end_date   = @month.end_of_month.end_of_week(:sunday)
+
+    @login_dates = @user.login_logs.pluck(:created_at).map(&:to_date)
   end
 
   # アバター選択画面

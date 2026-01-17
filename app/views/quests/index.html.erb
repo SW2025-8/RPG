@@ -1,46 +1,86 @@
 <div class="container mt-4">
-
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h1>クエスト一覧</h1>
-    <a href="<%= new_quest_path %>" class="btn btn-primary">新規クエスト作成</a>
+    <%= link_to "新規クエスト作成", new_quest_path, class: "btn btn-primary" %>
   </div>
 
-  <table class="table table-striped table-bordered">
-    <thead class="table-dark">
+  <table class="table table-bordered">
+    <thead>
       <tr>
-        <th>タイトル</th>
-        <th>経験値</th>
-        <th>操作</th>
-        <th>完了</th>
+        <th style="width: 35%;">タイトル</th>
+        <th style="width: 15%;">期限</th>
+        <th style="width: 10%;">経験値</th>
+        <th style="width: 15%;">操作</th>
+        <th style="width: 10%;">完了</th>
       </tr>
     </thead>
 
     <tbody>
       <% @quests.each do |quest| %>
-        <tr>
-          <td><%= quest.title %></td>
-          <td><%= quest.exp_reward %></td>
-          <td>
-            <a href="<%= quest_path(quest) %>" class="btn btn-sm btn-info text-white">詳細</a>
-            <a href="<%= edit_quest_path(quest) %>" class="btn btn-sm btn-warning">編集</a>
+        <%
+          due_class = nil
+          if quest.due_date.present?
+            days_left = (quest.due_date - Date.current).to_i
 
-            <%= button_to "削除", quest_path(quest),
-                method: :delete,
-                data: { turbo_confirm: "削除しますか？" },
-                class: "btn btn-sm btn-danger d-inline-block" %>
+            if days_left < 0
+              due_class = "due-expired"
+            elsif days_left <= 1
+              due_class = "due-1day"
+            elsif days_left <= 3
+              due_class = "due-3days"
+            elsif days_left <= 7
+              due_class = "due-7days"
+            end
+          end
+        %>
+
+        <tr class="<%= due_class %>">
+          <!-- タイトル -->
+          <td>
+            <strong><%= quest.title %></strong>
           </td>
 
+          <!-- 期限 -->
           <td>
+            <% if quest.due_date.present? %>
+              <%= quest.due_date.strftime("%Y/%m/%d") %>
+            <% else %>
+              —
+            <% end %>
+          </td>
+
+          <!-- 経験値 -->
+          <td>
+            <%= quest.exp_reward %>
+          </td>
+
+          <!-- 操作 -->
+          <td>
+            <%= link_to "編集",
+                  edit_quest_path(quest),
+                  class: "btn btn-outline-light btn-sm mb-1 w-100" %>
+
+            <%= button_to "削除",
+                  quest_path(quest),
+                  method: :delete,
+                  data: { confirm: "削除しますか？" },
+                  class: "btn btn-outline-light btn-sm w-100",
+                  form: { class: "d-inline" } %>
+          </td>
+
+          <!-- 完了 -->
+          <td class="text-center">
             <%= button_to "完了",
-                complete_quest_path(quest),
-                method: :patch,
-                class: "btn btn-sm btn-success",
-                form: { data: { turbo_confirm: "このクエストを完了しますか？" } } %>
+                  complete_quest_path(quest),
+                  method: :patch,
+                  class: "btn btn-success btn-sm" %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
-  <a href="<%= root_path %>" class="btn btn-outline-secondary">ホームに戻る</a>
+  <div class="mt-4">
+    <%= link_to "ホームに戻る", root_path, class: "btn btn-outline-light" %>
+  </div>
 </div>

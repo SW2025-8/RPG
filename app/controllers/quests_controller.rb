@@ -1,9 +1,16 @@
 class QuestsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_quest, only: [:edit, :update, :destroy, :complete]
+  before_action :set_quest, only: [:show, :edit, :update, :destroy, :complete]
 
   def index
-    @quests = current_user.quests.order(created_at: :asc)
+    @quests = current_user.quests
+              .order(Arel.sql("due_date IS NULL ASC"))
+              .order(:due_date)
+              .order(created_at: :asc)
+  end
+
+  def show
+    # set_quest で @quest を取得するだけ
   end
 
   def new
@@ -36,28 +43,34 @@ class QuestsController < ApplicationController
     redirect_to quests_path, notice: "削除しました"
   end
 
-  # ★ クエスト達成
   def complete
     user = current_user
 
-    # ===== 経験値獲得（ここが不足していた） =====
-    user.add_exp(@quest.exp) if @quest.respond_to?(:exp)
+    user.add_exp(@quest.exp_reward)
 
-    # ===== バトル進行 =====
-    user.battle_position += 1
+    coins =
+      case @quest.difficulty
+      when "初級"   then 1
+      when "中級"   then 2
+      when "上級"   then 3
+      when "超上級" then 4
+      else 0
+      end
+    user.coins += coins
 
-    if user.battle_position > 5
-      user.battle_stage += 1
-      user.battle_position = 1
-      user.stage_exp = 0
+    user.quest_logs.create!(
+      title: @quest.title,
+      exp: @quest.exp_reward
+    )
+
+    if user.hp > 0
+      user.deal_damage_to_enemy!(@quest.exp_reward)
     end
 
     user.save!
-
-    # クエスト達成したら削除
     @quest.destroy
 
-    redirect_to root_path, notice: "クエスト達成！次の敵が出現した！"
+    redirect_to root_path, notice: "クエスト達成！ +#{coins}コイン"
   end
 
   private
@@ -72,7 +85,9 @@ class QuestsController < ApplicationController
       :description,
       :category,
       :subcategory,
-      :difficulty
+      :difficulty,
+      :exp_reward,
+      :due_date
     )
   end
 end
